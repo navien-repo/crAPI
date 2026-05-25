@@ -2,7 +2,7 @@
 
 Terraform for a disposable OWASP crAPI lab at `vuln.navien.ai`.
 
-This stack is intentionally separate from NaviHAL. It creates a small EC2
+This stack is intentionally separate from NaviHAL. It creates an EC2
 instance, installs Docker Compose, runs the crAPI compose file and resets the
 lab every two hours by default. Official images are used for the backend
 services; `crapi-web` is rebuilt locally from `crapi_repo_url` /
@@ -53,8 +53,9 @@ docker compose up -d
 ## Notes
 
 - Data is ephemeral by design.
-- `t3.small` is cheap and may be tight. The instance adds a 2 GiB swapfile for
-  the local web build; use `t3.medium` if the lab still OOMs.
+- `t3.medium` is the default because the local React build for `crapi-web` is
+  memory hungry during bootstrap and every two-hour reset. The instance still
+  adds a 2 GiB swapfile as a buffer.
 - Only HTTP port 80 is public. The compose services bind to localhost.
 - `crapi_repo_url` must be publicly cloneable unless a deploy credential is
   added to the instance.

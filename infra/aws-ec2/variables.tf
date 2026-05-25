@@ -17,9 +17,9 @@ variable "domain_name" {
 }
 
 variable "instance_type" {
-  description = "Cheap x86 instance for Docker Compose. t3.small is intentionally modest; bump to t3.medium if crAPI OOMs."
+  description = "x86 instance for Docker Compose. t3.medium gives the local crapi-web rebuild enough memory during bootstrap and resets."
   type        = string
-  default     = "t3.small"
+  default     = "t3.medium"
 }
 
 variable "root_volume_gb" {
