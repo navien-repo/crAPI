@@ -23,6 +23,8 @@ resource "aws_instance" "crapi" {
 
   user_data_replace_on_change = true
   user_data = templatefile("${path.module}/user_data.sh.tftpl", {
+    crapi_repo_ref         = var.crapi_repo_ref
+    crapi_repo_url         = var.crapi_repo_url
     crapi_version          = var.crapi_version
     reset_interval_minutes = var.reset_interval_minutes
   })

@@ -34,8 +34,20 @@ variable "allowed_ssh_cidr" {
   default     = ""
 }
 
+variable "crapi_repo_url" {
+  description = "Git repository used on the EC2 instance. It must be publicly cloneable unless a deploy credential is added."
+  type        = string
+  default     = "https://github.com/navien-repo/crAPI.git"
+}
+
+variable "crapi_repo_ref" {
+  description = "Branch or tag to deploy from crapi_repo_url."
+  type        = string
+  default     = "develop"
+}
+
 variable "crapi_version" {
-  description = "crAPI Docker image tag."
+  description = "crAPI Docker image tag for official services. The web image is rebuilt locally from crapi_repo_ref using this tag."
   type        = string
   default     = "latest"
 }

@@ -15,13 +15,40 @@ apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin do
 
 systemctl enable --now docker
 
-mkdir -p /opt/crapi
-if [ ! -d /opt/crapi/.git ]; then
-  git clone --depth 1 https://github.com/OWASP/crAPI.git /opt/crapi
+if [ ! -f /swapfile ]; then
+  fallocate -l 2G /swapfile
+  chmod 600 /swapfile
+  mkswap /swapfile
+  swapon /swapfile
+  echo "/swapfile none swap sw 0 0" >> /etc/fstab
 else
-  git -C /opt/crapi fetch --depth 1 origin main
-  git -C /opt/crapi reset --hard origin/main
+  swapon /swapfile || true
 fi
+
+cat >/etc/crapi-lab.env <<'ENV'
+CRAPI_REPO_URL='${crapi_repo_url}'
+CRAPI_REPO_REF='${crapi_repo_ref}'
+CRAPI_VERSION='${crapi_version}'
+ENV
+
+cat >/usr/local/bin/crapi-sync-repo <<'SCRIPT'
+#!/usr/bin/env bash
+set -euxo pipefail
+source /etc/crapi-lab.env
+
+if [ ! -d /opt/crapi/.git ]; then
+  rm -rf /opt/crapi
+  git clone --depth 1 --branch "$CRAPI_REPO_REF" "$CRAPI_REPO_URL" /opt/crapi
+else
+  git -C /opt/crapi remote set-url origin "$CRAPI_REPO_URL"
+  git -C /opt/crapi fetch --depth 1 origin "$CRAPI_REPO_REF"
+  git -C /opt/crapi reset --hard FETCH_HEAD
+  git -C /opt/crapi clean -fdx
+fi
+SCRIPT
+chmod +x /usr/local/bin/crapi-sync-repo
+
+/usr/local/bin/crapi-sync-repo
 
 cat >/opt/crapi/deploy/docker/.env <<ENV
 VERSION=${crapi_version}
@@ -32,13 +59,37 @@ ENABLE_LOG4J=false
 CHATBOT_LIFE=0
 ENV
 
+cat >/opt/crapi/deploy/docker/docker-compose.local-web.yml <<'COMPOSE'
+services:
+  crapi-web:
+    build:
+      context: ../../services/web
+COMPOSE
+
 cat >/usr/local/bin/crapi-reset <<'SCRIPT'
 #!/usr/bin/env bash
 set -euxo pipefail
+/usr/local/bin/crapi-sync-repo
 cd /opt/crapi/deploy/docker
-docker compose -f docker-compose.yml --compatibility down -v --remove-orphans || true
-docker compose -f docker-compose.yml --compatibility pull
-docker compose -f docker-compose.yml --compatibility up -d
+source /etc/crapi-lab.env
+cat >.env <<ENV
+VERSION=$CRAPI_VERSION
+LISTEN_IP=127.0.0.1
+TLS_ENABLED=false
+ENABLE_SHELL_INJECTION=false
+ENABLE_LOG4J=false
+CHATBOT_LIFE=0
+ENV
+cat >docker-compose.local-web.yml <<'COMPOSE'
+services:
+  crapi-web:
+    build:
+      context: ../../services/web
+COMPOSE
+docker compose -f docker-compose.yml -f docker-compose.local-web.yml --compatibility down -v --remove-orphans || true
+docker compose -f docker-compose.yml -f docker-compose.local-web.yml --compatibility pull --ignore-buildable
+docker compose -f docker-compose.yml -f docker-compose.local-web.yml --compatibility build crapi-web
+docker compose -f docker-compose.yml -f docker-compose.local-web.yml --compatibility up -d
 docker image prune -af || true
 SCRIPT
 chmod +x /usr/local/bin/crapi-reset
