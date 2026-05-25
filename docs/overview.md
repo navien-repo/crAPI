@@ -15,6 +15,10 @@ crAPI has a microservices architecture comprising the following services develop
 * mongo: NoSQL Database
 * postgres: SQL Database
 
+## Local UI Customization
+
+This fork keeps crAPI vulnerable by design. The Web chatbot uses the same design-system color palette as the rest of the WebApp so it does not visually diverge from the main interface.
+
 [0]: ./challenges.md
 
 

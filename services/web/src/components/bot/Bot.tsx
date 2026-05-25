@@ -63,6 +63,20 @@ interface ChatBotComponentProps {
   role: string;
 }
 
+const chatTheme = {
+  primary: "#1890ff",
+  primaryHover: "#40a9ff",
+  secondary: "#722ed1",
+  accent: "#13c2c2",
+  textPrimary: "#262626",
+  textSecondary: "#595959",
+  textInverse: "#ffffff",
+  bgPrimary: "#ffffff",
+  bgTertiary: "#f5f5f5",
+  border: "#d9d9d9",
+  borderLight: "#f0f0f0",
+};
+
 const ChatBotComponent: React.FC<ChatBotComponentProps> = (props) => {
   const [expanded, setExpanded] = useState<boolean>(false);
   const [chatResetKey, setChatResetKey] = useState<number>(0);
@@ -372,8 +386,8 @@ What would you like to do next?`);
   // React Chatbotify settings
   const settings = {
     general: {
-      primaryColor: "#8b5cf6",
-      secondaryColor: "#a855f7",
+      primaryColor: chatTheme.primary,
+      secondaryColor: chatTheme.secondary,
       fontFamily:
         "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
       embedded: false,
@@ -396,7 +410,7 @@ What would you like to do next?`);
       showCharacterCount: false,
       allowNewlines: true,
       sendButtonStyle: {
-        background: "#10b981",
+        background: chatTheme.accent,
       },
     },
     botBubble: {
@@ -416,7 +430,11 @@ What would you like to do next?`);
           }}
         >
           <span
-            style={{ fontSize: "18px", fontWeight: "600", color: "#1f2937" }}
+            style={{
+              fontSize: "18px",
+              fontWeight: "600",
+              color: chatTheme.textPrimary,
+            }}
           >
             crAPI ChatBot
           </span>
@@ -518,30 +536,30 @@ What would you like to do next?`);
                 boxShadow: expanded
                   ? "0 20px 60px rgba(0, 0, 0, 0.2)"
                   : "0 20px 40px rgba(0, 0, 0, 0.1)",
-                border: "1px solid #e5e7eb",
-                background: "#ffffff",
+                border: `1px solid ${chatTheme.border}`,
+                background: chatTheme.bgPrimary,
               },
               chatInputAreaStyle: {
                 padding: "20px 24px",
-                background: "#ffffff",
-                borderTop: "1px solid #f3f4f6",
+                background: chatTheme.bgPrimary,
+                borderTop: `1px solid ${chatTheme.borderLight}`,
               },
               sendButtonStyle: {
-                background: "#10b981",
+                background: chatTheme.accent,
                 width: "44px",
                 height: "44px",
                 borderRadius: "50%",
                 marginLeft: "12px",
                 border: "none",
-                color: "#ffffff",
+                color: chatTheme.textInverse,
                 cursor: "pointer",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
               },
               botBubbleStyle: {
-                background: "#f3f4f6",
-                color: "#374151",
+                background: chatTheme.bgTertiary,
+                color: chatTheme.textSecondary,
                 borderRadius: "16px",
                 padding: "12px 16px",
                 margin: "8px 0",
@@ -551,8 +569,8 @@ What would you like to do next?`);
                 lineHeight: "1.4",
               },
               userBubbleStyle: {
-                background: "#8b5cf6",
-                color: "#ffffff",
+                background: chatTheme.primary,
+                color: chatTheme.textInverse,
                 borderRadius: "16px",
                 padding: "12px 16px",
                 margin: "8px 0",

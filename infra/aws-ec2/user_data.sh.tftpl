@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+export DEBIAN_FRONTEND=noninteractive
+
+apt-get update
+apt-get install -y ca-certificates curl git nginx
+
+install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+chmod a+r /etc/apt/keyrings/docker.asc
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" > /etc/apt/sources.list.d/docker.list
+apt-get update
+apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+systemctl enable --now docker
+
+mkdir -p /opt/crapi
+if [ ! -d /opt/crapi/.git ]; then
+  git clone --depth 1 https://github.com/OWASP/crAPI.git /opt/crapi
+else
+  git -C /opt/crapi fetch --depth 1 origin main
+  git -C /opt/crapi reset --hard origin/main
+fi
+
+cat >/opt/crapi/deploy/docker/.env <<ENV
+VERSION=${crapi_version}
+LISTEN_IP=127.0.0.1
+TLS_ENABLED=false
+ENABLE_SHELL_INJECTION=false
+ENABLE_LOG4J=false
+CHATBOT_LIFE=0
+ENV
+
+cat >/usr/local/bin/crapi-reset <<'SCRIPT'
+#!/usr/bin/env bash
+set -euxo pipefail
+cd /opt/crapi/deploy/docker
+docker compose -f docker-compose.yml --compatibility down -v --remove-orphans || true
+docker compose -f docker-compose.yml --compatibility pull
+docker compose -f docker-compose.yml --compatibility up -d
+docker image prune -af || true
+SCRIPT
+chmod +x /usr/local/bin/crapi-reset
+
+cat >/etc/systemd/system/crapi-reset.service <<'UNIT'
+[Unit]
+Description=Reset OWASP crAPI lab
+After=docker.service network-online.target
+Wants=docker.service network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/crapi-reset
+UNIT
+
+cat >/etc/systemd/system/crapi-reset.timer <<UNIT
+[Unit]
+Description=Reset OWASP crAPI lab every ${reset_interval_minutes} minutes
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=${reset_interval_minutes}min
+AccuracySec=1min
+Persistent=true
+Unit=crapi-reset.service
+
+[Install]
+WantedBy=timers.target
+UNIT
+
+cat >/etc/nginx/sites-available/default <<'NGINX'
+server {
+    listen 80 default_server;
+    server_name _;
+
+    client_max_body_size 20m;
+
+    location / {
+        proxy_pass http://127.0.0.1:8888;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+NGINX
+nginx -t
+systemctl enable --now nginx
+systemctl restart nginx
+
+systemctl daemon-reload
+systemctl enable --now crapi-reset.timer
+systemctl start crapi-reset.service
