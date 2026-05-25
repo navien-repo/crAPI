@@ -19,6 +19,8 @@ crAPI has a microservices architecture comprising the following services develop
 
 This fork keeps crAPI vulnerable by design. The Web chatbot uses the same design-system color palette as the rest of the WebApp so it does not visually diverge from the main interface.
 
+The Web UI is branded as NaviHAL Concepts for the local lab experience. This is a visual fork of OWASP/crAPI; the footer keeps the upstream attribution visible and the vulnerable training behavior remains intentional.
+
 [0]: ./challenges.md
 
 

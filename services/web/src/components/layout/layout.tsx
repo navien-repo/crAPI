@@ -17,7 +17,7 @@ import "./layout.css";
 
 import React, { useState, useEffect } from "react";
 
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { Layout, Spin } from "antd";
 import { connect, ConnectedProps } from "react-redux";
 import LoginContainer from "../../containers/login/login";
@@ -50,7 +50,7 @@ import {
 import { isAccessTokenValid } from "../../utils";
 import ChangePhoneNumber from "../changePhoneNumber/changePhoneNumber";
 
-const { Content } = Layout;
+const { Content, Footer } = Layout;
 
 interface AfterLoginProps {
   component: React.ComponentType<any>;
@@ -160,6 +160,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
  */
 const StyledComp: React.FC<PropsFromRedux> = (props) => {
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+  const location = useLocation();
 
   function handleResize() {
     setWindowHeight(window.innerHeight);
@@ -168,6 +169,12 @@ const StyledComp: React.FC<PropsFromRedux> = (props) => {
   const isLoggedIn = props.isLoggedIn;
   const accessToken = props.accessToken;
   const validateAccessToken = props.validateAccessToken;
+  const isAuthRoute = [
+    "/login",
+    "/signup",
+    "/forgot-password",
+    "/unlock",
+  ].includes(location.pathname);
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
@@ -183,7 +190,9 @@ const StyledComp: React.FC<PropsFromRedux> = (props) => {
     <Spin spinning={props.fetchingData} className="spinner">
       <Layout style={{ minHeight: windowHeight }}>
         <NavBar />
-        <Content className="layout-content">
+        <Content
+          className={`layout-content ${isAuthRoute ? "auth-layout-content" : ""}`}
+        >
           <Routes>
             <Route
               path="/login"
@@ -458,6 +467,20 @@ const StyledComp: React.FC<PropsFromRedux> = (props) => {
             role={props.role}
           />
         </Content>
+        <Footer className="lab-footer">
+          <span>NaviHAL Concepts vulnerable API lab</span>
+          <span>
+            Fork of{" "}
+            <a
+              href="https://github.com/OWASP/crAPI"
+              target="_blank"
+              rel="noreferrer"
+            >
+              OWASP/crAPI
+            </a>
+            . Vulnerable by design.
+          </span>
+        </Footer>
       </Layout>
     </Spin>
   );

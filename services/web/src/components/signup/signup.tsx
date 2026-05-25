@@ -17,6 +17,12 @@ import { Button, Form, Input, Card } from "antd";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import {
+  LockOutlined,
+  MailOutlined,
+  PhoneOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
+import {
   EMAIL_REQUIRED,
   NAME_REQUIRED,
   INVALID_PHONE,
@@ -46,8 +52,30 @@ const Signup: React.FC<SignupProps> = ({
   const navigate = useNavigate();
 
   return (
-    <div className="container">
-      <Card title="Sign Up" bordered={false} className="form-card">
+    <div className="auth-container">
+      <section className="auth-brand-panel" aria-label="NaviHAL Concepts">
+        <div className="auth-brand-badge">../navihal concepts</div>
+        <h1>New Operator</h1>
+        <p>
+          Create a lab identity, bring your own packet snacks, and try not to
+          anger the demo database.
+        </p>
+        <div className="auth-terminal" aria-hidden="true">
+          <span>$ enroll pilot --clearance=curious</span>
+          <span>quest log: signup, login, break stuff</span>
+          <span>warning: dragons replaced by APIs</span>
+        </div>
+      </section>
+      <Card
+        title={
+          <div className="auth-card-title">
+            <span>Create Test Pilot</span>
+            <small>no side quests skipped</small>
+          </div>
+        }
+        bordered={false}
+        className="auth-card"
+      >
         <Form
           name="basic"
           initialValues={{
@@ -65,7 +93,7 @@ const Signup: React.FC<SignupProps> = ({
               },
             ]}
           >
-            <Input placeholder="Full Name" />
+            <Input placeholder="Full Name" prefix={<UserOutlined />} />
           </Form.Item>
           <Form.Item
             name="email"
@@ -77,7 +105,7 @@ const Signup: React.FC<SignupProps> = ({
               },
             ]}
           >
-            <Input placeholder="Email" />
+            <Input placeholder="Email" prefix={<MailOutlined />} />
           </Form.Item>
           <Form.Item
             name="number"
@@ -88,7 +116,7 @@ const Signup: React.FC<SignupProps> = ({
               },
             ]}
           >
-            <Input placeholder="Phone No." />
+            <Input placeholder="Phone No." prefix={<PhoneOutlined />} />
           </Form.Item>
           <Form.Item
             name="password"
@@ -103,7 +131,7 @@ const Signup: React.FC<SignupProps> = ({
               },
             ]}
           >
-            <Input.Password placeholder="Password" />
+            <Input.Password placeholder="Password" prefix={<LockOutlined />} />
           </Form.Item>
           <Form.Item
             name="againPassword"
@@ -123,20 +151,27 @@ const Signup: React.FC<SignupProps> = ({
               }),
             ]}
           >
-            <Input.Password placeholder="Re-enter Password" />
+            <Input.Password
+              placeholder="Re-enter Password"
+              prefix={<LockOutlined />}
+            />
           </Form.Item>
           <Form.Item>
-            <button
-              className="alternative-style"
-              onClick={() => navigate("/login")}
-              type="button"
-            >
-              Already have an Account? Login
-            </button>
-            {hasErrored && <div className="error-message">{errorMessage}</div>}
-            <Button type="primary" htmlType="submit" className="form-button">
-              Signup
-            </Button>
+            <div className="form-actions">
+              <button
+                className="alternative-style"
+                onClick={() => navigate("/login")}
+                type="button"
+              >
+                Already have an Account? Login
+              </button>
+              {hasErrored && (
+                <div className="error-message">{errorMessage}</div>
+              )}
+              <Button type="primary" htmlType="submit" className="form-button">
+                Signup
+              </Button>
+            </div>
           </Form.Item>
         </Form>
       </Card>

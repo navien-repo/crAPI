@@ -18,7 +18,7 @@ import "./login.css";
 import { Button, Form, Input, Card } from "antd";
 import React from "react";
 
-import { UserOutlined } from "@ant-design/icons";
+import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { EMAIL_VALIDATION } from "../../constants/constants";
 import { EMAIL_REQUIRED } from "../../constants/messages";
 import { useNavigate } from "react-router-dom";
@@ -45,8 +45,30 @@ const Login: React.FC<LoginProps> = ({
     navigate("/signup");
   };
   return (
-    <div className="container">
-      <Card title="Login" bordered={false} className="form-card">
+    <div className="auth-container">
+      <section className="auth-brand-panel" aria-label="NaviHAL Concepts">
+        <div className="auth-brand-badge">../navihal concepts</div>
+        <h1>NaviHAL Concepts</h1>
+        <p>
+          Vulnerable API lab with a clean suit, noisy logs, and exactly zero
+          production promises.
+        </p>
+        <div className="auth-terminal" aria-hidden="true">
+          <span>$ boot vulnerable-lab --mode=training</span>
+          <span>fork: OWASP/crAPI</span>
+          <span>status: bugs intentional, coffee optional</span>
+        </div>
+      </section>
+      <Card
+        title={
+          <div className="auth-card-title">
+            <span>Access Console</span>
+            <small>roll initiative for auth</small>
+          </div>
+        }
+        bordered={false}
+        className="auth-card"
+      >
         <Form
           name="basic"
           initialValues={{
@@ -64,7 +86,7 @@ const Login: React.FC<LoginProps> = ({
               },
             ]}
           >
-            <Input placeholder="Email" prefix={<UserOutlined />} />
+            <Input placeholder="Email" prefix={<MailOutlined />} />
           </Form.Item>
           <Form.Item
             name="password"
@@ -75,7 +97,7 @@ const Login: React.FC<LoginProps> = ({
               },
             ]}
           >
-            <Input.Password placeholder="Password" />
+            <Input.Password placeholder="Password" prefix={<LockOutlined />} />
           </Form.Item>
           <Form.Item>
             <div className="form-actions">

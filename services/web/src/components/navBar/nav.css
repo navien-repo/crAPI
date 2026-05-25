@@ -12,7 +12,7 @@
   display: flex;
   float: left;
   align-items: center;
-  gap: var(--spacing-xl);
+  gap: var(--spacing-lg);
   font-weight: var(--font-weight-medium);
   color: var(--text-inverse);
 }
@@ -65,7 +65,7 @@
 }
 
 .avatarContainer::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -2px;
   left: -2px;
@@ -82,21 +82,64 @@
   opacity: 0.3;
 }
 
-.logo-text {
-  font-size: var(--font-size-xl);
+.logo-lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  cursor: pointer;
+  color: var(--text-inverse);
+  transition: all var(--transition-normal);
+}
+
+.logo-lockup:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+.logo-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: linear-gradient(
+      135deg,
+      rgba(19, 194, 194, 0.95),
+      rgba(24, 144, 255, 0.9)
+    ),
+    #0f172a;
+  box-shadow: 0 8px 22px rgba(19, 194, 194, 0.25);
+  color: #ffffff;
+  font-size: 13px;
   font-weight: var(--font-weight-bold);
-  background: linear-gradient(45deg, var(--text-inverse), var(--accent-light));
+  letter-spacing: 0;
+}
+
+.logo-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.05;
+}
+
+.logo-text {
+  font-size: 17px;
+  font-weight: var(--font-weight-bold);
+  background: linear-gradient(90deg, #ffffff, #d7fffb);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  cursor: pointer;
-  transition: all var(--transition-normal);
-  letter-spacing: 0.5px;
+  letter-spacing: 0;
 }
 
-.logo-text:hover {
-  transform: scale(1.05);
-  filter: brightness(1.2);
+.logo-subtitle {
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 10px;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0;
+  text-transform: uppercase;
 }
 
 .notification {
@@ -162,13 +205,18 @@
 }
 
 .profile-dropdown-trigger::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
   transition: left var(--transition-normal);
 }
 
@@ -249,7 +297,11 @@
 .greeting-text {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  background: linear-gradient(45deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.9),
+    rgba(255, 255, 255, 0.7)
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -282,9 +334,9 @@
 
 .navbar-button {
   color: var(--text-inverse);
-  border: 2px solid rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.42);
   font-weight: var(--font-weight-semibold);
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.11);
   backdrop-filter: blur(20px);
   border-radius: var(--border-radius-lg);
   padding: 6px var(--spacing-md);
@@ -302,13 +354,18 @@
 }
 
 .navbar-button::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
   transition: left var(--transition-normal);
 }
 
@@ -347,15 +404,23 @@
 
 /* Specific styling for Signup button */
 .navbar-button:last-of-type {
-  background: linear-gradient(45deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2));
-  border: 2px solid var(--text-inverse);
+  background: linear-gradient(
+    135deg,
+    rgba(19, 194, 194, 0.85),
+    rgba(24, 144, 255, 0.8)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.45);
   font-weight: var(--font-weight-bold);
 }
 
 .navbar-button:last-of-type:hover {
-  background: linear-gradient(45deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.3));
+  background: linear-gradient(
+    135deg,
+    rgba(54, 207, 201, 0.9),
+    rgba(64, 169, 255, 0.85)
+  );
   border-color: var(--text-inverse);
-  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 20px rgba(19, 194, 194, 0.22);
 }
 
 /* Enhanced Dropdown Menu Styling */
@@ -384,7 +449,11 @@
 }
 
 .ant-dropdown-menu-item:hover {
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.05)) !important;
+  background: linear-gradient(
+    135deg,
+    rgba(139, 92, 246, 0.1),
+    rgba(59, 130, 246, 0.05)
+  ) !important;
   color: var(--primary-color) !important;
   transform: translateX(2px) !important;
   box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15) !important;
@@ -401,5 +470,3 @@
   opacity: 0.8 !important;
   transition: all var(--transition-normal) !important;
 }
-
-

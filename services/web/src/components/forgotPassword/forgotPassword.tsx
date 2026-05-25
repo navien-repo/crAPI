@@ -48,8 +48,17 @@ const ForgotPassword: React.FC = () => {
   const CurrentComponent = steps[currentStep].component;
 
   return (
-    <div className="container">
-      <Card title="Forgot Password" bordered={false} className="form-card">
+    <div className="auth-container auth-container-compact">
+      <Card
+        title={
+          <div className="auth-card-title">
+            <span>Password Side Quest</span>
+            <small>fetch token, defeat amnesia</small>
+          </div>
+        }
+        bordered={false}
+        className="auth-card"
+      >
         <Steps current={currentStep} size="small">
           {steps.map((step) => (
             <Step key={step.title} title={step.title} />

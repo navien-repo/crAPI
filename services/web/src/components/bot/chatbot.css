@@ -6,7 +6,6 @@
   z-index: 1000;
 }
 
-
 .expand-chatbot-btn {
   border: none;
   outline: none;
@@ -27,7 +26,6 @@
   transition: all 0.2s ease;
   background: transparent;
 }
-
 
 .expand-chatbot-btn:hover {
   color: #ffffff;
@@ -81,7 +79,6 @@
   transform: scale(0.95);
 }
 
-
 .expand-chatbot-btn:after {
   content: "";
   position: absolute;
@@ -93,9 +90,11 @@
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 50%;
   opacity: 0;
-  transition: width 0.2s ease-out, height 0.2s ease-out, opacity 0.2s ease-out;
+  transition:
+    width 0.2s ease-out,
+    height 0.2s ease-out,
+    opacity 0.2s ease-out;
 }
-
 
 /* Enhanced chatbot trigger button */
 .app-chatbot-button {
@@ -105,7 +104,11 @@
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--secondary-color)
+  );
   border: none;
   color: var(--text-inverse);
   font-size: 24px;
@@ -121,11 +124,29 @@
 .app-chatbot-button:hover {
   transform: scale(1.1) rotate(5deg);
   box-shadow: 0 12px 32px rgba(24, 144, 255, 0.4);
-  background: linear-gradient(135deg, var(--primary-hover), var(--secondary-hover));
+  background: linear-gradient(
+    135deg,
+    var(--primary-hover),
+    var(--secondary-hover)
+  );
 }
 
 .app-chatbot-button:active {
   transform: scale(0.95);
+}
+
+.auth-layout-content .rcb-toggle-button {
+  left: var(--spacing-lg) !important;
+  right: auto !important;
+}
+
+.auth-layout-content .rcb-chat-window {
+  left: var(--spacing-lg) !important;
+  right: auto !important;
+}
+
+.auth-layout-content .rcb-chat-tooltip {
+  display: none !important;
 }
 
 /* Expanded chatbot window styling */

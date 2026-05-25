@@ -18,7 +18,7 @@ import "./unlock.css";
 import { Button, Form, Input, Card } from "antd";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { UserOutlined } from "@ant-design/icons";
+import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { EMAIL_VALIDATION } from "../../constants/constants";
 import { EMAIL_REQUIRED } from "../../constants/messages";
 
@@ -43,8 +43,17 @@ const Unlock: React.FC<UnlockProps> = ({
   const navigate = useNavigate();
 
   return (
-    <div className="container">
-      <Card title="Unlock Account" bordered={false} className="form-card">
+    <div className="auth-container auth-container-compact">
+      <Card
+        title={
+          <div className="auth-card-title">
+            <span>Account Airlock</span>
+            <small>beep boop, open sesame</small>
+          </div>
+        }
+        bordered={false}
+        className="auth-card"
+      >
         <Form
           name="basic"
           initialValues={{
@@ -64,7 +73,7 @@ const Unlock: React.FC<UnlockProps> = ({
           >
             <Input
               placeholder="Email"
-              prefix={<UserOutlined />}
+              prefix={<MailOutlined />}
               value={email}
             />
           </Form.Item>
@@ -77,14 +86,18 @@ const Unlock: React.FC<UnlockProps> = ({
               },
             ]}
           >
-            <Input.Password placeholder="Code" />
+            <Input.Password placeholder="Code" prefix={<LockOutlined />} />
           </Form.Item>
           <Form.Item>
-            {hasErrored && <div className="error-message">{errorMessage}</div>}
-            {message && <div className="error-message">{message}</div>}
-            <Button type="primary" htmlType="submit" className="form-button">
-              Unlock
-            </Button>
+            <div className="form-actions">
+              {hasErrored && (
+                <div className="error-message">{errorMessage}</div>
+              )}
+              {message && <div className="error-message">{message}</div>}
+              <Button type="primary" htmlType="submit" className="form-button">
+                Unlock
+              </Button>
+            </div>
           </Form.Item>
           <Form.Item>
             <button
